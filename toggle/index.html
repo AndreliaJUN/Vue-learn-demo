@@ -1,0 +1,37 @@
+<div id="root">
+    <transition name="fade"
+                @before-enter="handleBeforeEnter"
+                @enter="handleEnter"
+                @after-enter="handleAfterEnter"     //enter 事件中 done 被调用后，after-enter 事件会被触发
+    >
+        <div v-if="show">hello world</div>
+    </transition>
+    <button @click="handleClick">切换</button>
+</div>
+let vm = new Vue({
+    el: '#root',
+    data: {
+        show: true
+    },
+    methods: {
+        handleClick() {
+            this.show = !this.show
+        },
+        handleBeforeEnter(el) {
+            el.style.color = 'red'
+        },
+        handleEnter(el, done) {
+            setTimeout(() => {
+                el.style.color = 'green'
+            }, 2000)
+            setTimeout(()={
+                done()
+            },4000)
+        },
+        handleAfterEnter(el) {      //接收一个参数 el，为 dom 元素
+            setTimeout(()=>{
+                el.style.color = 'blue'
+            },2000)
+        }
+    }
+})
